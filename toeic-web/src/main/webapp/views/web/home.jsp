@@ -1,3 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
+<%@include file="/common/taglib.jsp"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title><fmt:message key="label.home" bundle="${lang}"/></title>
+</head>
+<body>
 <!--Carousel
 ==================================================-->
 
@@ -11,7 +22,7 @@
                     <div class="span6">
 
                         <div class="carousel-caption">
-                            <h1>Example headline</h1>
+                            <h1>Minh Tùng</h1>
                             <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
                             <a class="btn btn-large btn-primary" href="#">Sign up today</a>
                         </div>
@@ -22,9 +33,6 @@
 
                 </div>
             </div>
-
-
-
 
         </div>
 
@@ -50,10 +58,6 @@
 
         </div>
 
-
-
-
-
     </div>
     <!-- Carousel nav -->
     <a class="carousel-control left " href="#myCarousel" data-slide="prev"><i class="icon-chevron-left"></i></a>
@@ -63,11 +67,8 @@
 </div>
 <!-- /Carousel -->
 
-
-
 <!-- Feature
 ==============================================-->
-
 
 <div class="row feature-box">
     <div class="span12 cnt-title">
@@ -106,13 +107,11 @@
     </div>
 </div>
 
-
 <!-- /.Feature -->
 
 <div class="hr-divider"></div>
 
 <!-- Row View -->
-
 
 <div class="row">
     <div class="span6"><img src="img/responsive.png"></div>
@@ -124,3 +123,5 @@
         <a href="#">Read More &rarr;</a>
     </div>
 </div>
+</body>
+</html>

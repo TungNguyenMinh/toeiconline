@@ -18,19 +18,17 @@
             <ul class="nav ace-nav">
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <span class="user-info">
-                            <small>Xin chào, </small>
-                        </span>
+                            <span class="user-info">
+                                <small>Xin chào</small>
+                            </span>
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
-                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                        <li>
-                            <a href="#">
-                                <i class="ace-icon fa fa-power-off"></i>
-                                Thoát
-                            </a>
-                        </li>
-                    </ul>
+                    <li class="light-blue dropdown-modal">
+                        <a href="#">
+                            <i class="ace-icon fa fa-power-off"></i>
+                            <fmt:message key="label.logout" bundle="${lang}"/>
+                        </a>
+                    </li>
                 </li>
             </ul>
         </div>

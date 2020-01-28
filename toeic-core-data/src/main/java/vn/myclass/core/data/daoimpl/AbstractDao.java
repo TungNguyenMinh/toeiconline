@@ -91,7 +91,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public Object[] findByProperty(String property, Object value, String sortExperssion, String sortDirection) {
+    public Object[] findByProperty(String property, Object value, String sortExperssion, String sortDirection, Integer offset, Integer limit) {
         List<T> list = new ArrayList<T>();
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
@@ -110,6 +110,12 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             if (value != null) {
                 query1.setParameter("value", value);
             }
+            if (offset != null && offset >= 0) {
+                query1.setFirstResult(offset);
+            }
+            if (limit != null && limit > 0) {
+                query1.setMaxResults(limit);
+            }
             list = query1.list();
             StringBuilder sql2 = new StringBuilder("select count(*) from ");
             sql2.append(getPersistenceClassName());
@@ -117,7 +123,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
                 sql2.append(" where ").append(property).append("= :value");
             }
             Query query2 = session.createQuery(sql2.toString());
-            if(value != null) {
+            if (value != null) {
                 query2.setParameter("value", value);
             }
             totalItem = query2.list().get(0);
@@ -136,10 +142,10 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         try {
-            for(ID item: ids) {
+            for (ID item : ids) {
                 T t = (T) session.get(persistenceClass, item);
                 session.delete(t);
-                count ++;
+                count++;
             }
             transaction.commit();
         } catch (HibernateException e) {
