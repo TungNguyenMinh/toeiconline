@@ -5,6 +5,7 @@ import vn.myclass.core.common.WebConstant;
 import vn.myclass.core.dto.ListenGuidelineDTO;
 import vn.myclass.core.service.ListenGuidelineService;
 import vn.myclass.core.service.impl.ListenGuidelineServiceImpl;
+import vn.myclass.core.utils.FormUtil;
 import vn.myclass.core.utils.RequestUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -24,7 +25,7 @@ public class ListenGuidelineController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ListenGuidelineCommand command = new ListenGuidelineCommand();
+        ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, request);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
         /*command.setMaxPageItems(2);
         RequestUtil.initSearchBean(request, command);
