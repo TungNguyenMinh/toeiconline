@@ -1,7 +1,9 @@
 package vn.myclass.controller.admin;
 
+import org.apache.commons.fileupload.FileUploadException;
 import vn.myclass.command.ListenGuidelineCommand;
 import vn.myclass.core.common.WebConstant;
+import vn.myclass.core.common.utils.UploadUtil;
 import vn.myclass.core.dto.ListenGuidelineDTO;
 import vn.myclass.core.service.ListenGuidelineService;
 import vn.myclass.core.service.impl.ListenGuidelineServiceImpl;
@@ -47,6 +49,19 @@ public class ListenGuidelineController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
+        UploadUtil uploadUtil = new UploadUtil();
+        try {
+            uploadUtil.writeOrUpdateFile(request);
+            request.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
+            request.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.guideline.listen.add.success"));
+        } catch (FileUploadException e) {
+            request.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
+            request.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.error"));
+        } catch (Exception e) {
+            request.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
+            request.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.error"));
+        }
+        response.sendRedirect("/admin-guideline-listen-edit.html?urlType=url_list");
     }
 }

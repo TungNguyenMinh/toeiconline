@@ -36,7 +36,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.garamarguideline.upload.image" bundle="${lang}"/></label>
                             <div class="col-sm-9">
-                                <input type="file"/>
+                                <input type="file" name="file"/>
                             </div>
                         </div>
                         <div class="form-group">
