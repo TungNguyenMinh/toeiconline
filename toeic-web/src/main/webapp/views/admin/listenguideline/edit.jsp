@@ -34,9 +34,25 @@
                     </c:if>
                     <form action="${formUrl}" method="post" enctype="multipart/form-data">
                         <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.title" bundle="${lang}"/></label>
+                            <div class="col-sm-9">
+                                <input type="text" name="pojo.title"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.garamarguideline.upload.image" bundle="${lang}"/></label>
                             <div class="col-sm-9">
                                 <input type="file" name="file"/>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.content" bundle="${lang}"/></label>
+                            <div class="col-sm-9">
+                                <input type="text" name="pojo.content"/>
                             </div>
                         </div>
                         <div class="form-group">
