@@ -1,16 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/common/taglib.jsp"%>
+<%@include file="/common/taglib.jsp" %>
 <c:url var="formUrl" value="/admin-guideline-listen-edit.html"/>
 <html>
 <head>
-    <title><fmt:message key="label.guideline.listen.edit" bundle="${lang}"/> </title>
+    <title><fmt:message key="label.guideline.listen.edit" bundle="${lang}"/></title>
 </head>
 <body>
 <div class="main-content">
     <div class="main-content-inner">
         <div class="breadcrumbs" id="breadcrumbs">
             <script type="text/javascript">
-                try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+                try {
+                    ace.settings.check('breadcrumbs', 'fixed')
+                } catch (e) {
+                }
             </script>
 
             <ul class="breadcrumb">
@@ -32,39 +35,61 @@
                                 ${messageResponse}
                         </div>
                     </c:if>
-                    <%--<form action="${formUrl}" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.title" bundle="${lang}"/></label>
-                            <div class="col-sm-9">
-                                <input type="text" name="pojo.title"/>
-                            </div>
+                    <%--<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <h2>This is a heading</h2>
+                            <p>This is a paragraph.</p>
+                            <p class="textHide">This is another paragraph.</p>
                         </div>
-                        <br/>
-                        <br/>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.garamarguideline.upload.image" bundle="${lang}"/></label>
-                            <div class="col-sm-9">
-                                <input type="file" name="file"/>
-                            </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <button id="btnHide">Click me to hide paragraphs</button>
                         </div>
-                        <br/>
-                        <br/>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right"><fmt:message key="label.guideline.listen.content" bundle="${lang}"/></label>
-                            <div class="col-sm-9">
-                                <input type="text" name="pojo.content"/>
-                            </div>
+                    </div>--%>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <input type="text" value="JSP-SERVLET" id="value">
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="submit" class="btn btn-white btn-warning btn-bold" value="<fmt:message key="label.done" bundle="${lang}"/> "/>
-                            </div>
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <p id="showValue">Nothing in this</p>
                         </div>
-                    </form>--%>
+                    </div>
+                    <br/>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <button onclick="usingValAction()">Show info</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        hideAllWhenClickButton();
+    });
+
+    function hideAllWhenClickButton() {
+        $("#btnHide").click(function () {
+            $(".textHide").hide();
+        });
+    }
+    function usingValAction() {
+        var value = $('#value').val();
+        $('#showValue').html(value);
+    }
+</script>
 </body>
 </html>
