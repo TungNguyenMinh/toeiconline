@@ -51,7 +51,7 @@
                             <button id="btnHide">Click me to hide paragraphs</button>
                         </div>
                     </div>--%>
-                    <div class="form-group">
+                    <%--<div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right"></label>
                         <div class="col-sm-9">
                             <input type="text" value="JSP-SERVLET" id="value">
@@ -69,6 +69,26 @@
                         <label class="col-sm-3 control-label no-padding-right"></label>
                         <div class="col-sm-9">
                             <button onclick="usingValAction()">Show info</button>
+                        </div>
+                    </div>--%>
+                    <%--<br/>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <input type="checkbox" id="testCheckBox"/>
+                        </div>
+                    </div>--%>
+                    <%--jQuery css() Method--%>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <p style="color: red">My name noname</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <div class="col-sm-9">
+                            <button id="demoCssMethod">Change color of text</button>
                         </div>
                     </div>
                 </div>
