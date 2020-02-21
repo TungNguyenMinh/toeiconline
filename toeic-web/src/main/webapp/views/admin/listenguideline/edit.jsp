@@ -79,37 +79,54 @@
                         </div>
                     </div>--%>
                     <%--jQuery css() Method--%>
-                    <div class="form-group">
+                    <%--<div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right"></label>
                         <div class="col-sm-9">
-                            <p style="color: red">My name noname</p>
+                            <p style="color: red" id="demoCssMethod1">My name noname</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right"></label>
                         <div class="col-sm-9">
-                            <button id="demoCssMethod">Change color of text</button>
+                            <button id="demoCssMethod" onclick="demoCssMethod()">Change color of text</button>
                         </div>
+                    </div>--%>
+                    <%--jQuery closest() Method--%>
+                    <div style="width:500px;">div (great-grandparent)
+                        <ul>ul (second ancestor - second grandparent)
+                            <ul>ul (first ancestor - first grandparent)
+                                <li>li (direct parent)
+                                    <span>span</span>
+                                </li>
+                            </ul>
+                        </ul>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<script>
-    $(document).ready(function () {
-        hideAllWhenClickButton();
-    });
-
-    function hideAllWhenClickButton() {
-        $("#btnHide").click(function () {
-            $(".textHide").hide();
+    <script>
+        $(document).ready(function () {
+            hideAllWhenClickButton();
+            demoCssMethod();
         });
-    }
-    function usingValAction() {
-        var value = $('#value').val();
-        $('#showValue').html(value);
-    }
-</script>
+
+        function hideAllWhenClickButton() {
+            $("#btnHide").click(function () {
+                $(".textHide").hide();
+            });
+        }
+
+        function usingValAction() {
+            var value = $('#value').val();
+            $('#showValue').html(value);
+        }
+
+        function demoCssMethod() {
+            $('#demoCssMethod1').css("color", "blue");
+        }
+    </script>
+</div>
 </body>
 </html>
