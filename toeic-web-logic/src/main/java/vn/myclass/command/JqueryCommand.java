@@ -1,6 +1,12 @@
 package vn.myclass.command;
 
-public class JqueryCommand {
+import vn.myclass.core.command.AbstractCommand;
+import vn.myclass.core.dto.JqueryDTO;
+
+public class JqueryCommand extends AbstractCommand<JqueryDTO> {
+    public JqueryCommand() {
+        this.pojo = new JqueryDTO();
+    }
     public String getUrlType() {
         return urlType;
     }
