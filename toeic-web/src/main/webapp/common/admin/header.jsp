@@ -19,9 +19,9 @@
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                             <span class="user-info">
-                                <small>Xin chào</small>
+                                <small>Xin chào [Tên]</small>
                             </span>
-                        <i class="ace-icon fa fa-caret-down"></i>
+                       <%-- <i class="ace-icon fa fa-caret-down"></i>--%>
                     </a>
                     <li class="light-blue dropdown-modal">
                         <a href="#">
