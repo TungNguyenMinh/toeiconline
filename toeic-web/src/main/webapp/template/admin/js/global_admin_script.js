@@ -3,6 +3,7 @@ $(document).ready(function () {
     enableOrDisableDeleteAll();
 });
 function bindEventCheckAllCheckBox(id) {
+    // edit
     $('#' + id).on('change', function () {
         if ((this).checked) {
             //enable all checkbox
