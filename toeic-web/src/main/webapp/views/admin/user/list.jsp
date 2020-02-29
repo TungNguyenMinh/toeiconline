@@ -2,7 +2,7 @@
 <%@ include file="/common/taglib.jsp" %>
 <html>
 <head>
-    <title><fmt:message key="label.user.management"/></title>
+    <title><fmt:message key="label.user.management" bundle="${lang}"/></title>
 </head>
 <body>
 <div class="main-content">
@@ -41,7 +41,8 @@
                                                 <i class="fa fa-plus-circle bigger-110 purple"></i>
                                             </span>
                                         </a>
-                                        <button type="button" class="dt-button buttons-html5 btn btn-white btn-primary btn-bold">
+                                        <button type="button" class="dt-button buttons-html5 btn btn-white btn-primary btn-bold" id="deleteAll" disabled
+                                            data-toggle="tooltip" title="<fmt:message key='label.deleteall' bundle='${lang}'/>">
                                             <span>
                                                 <i class="fa fa-trash-o bigger-110 pink"></i>
                                             </span>
@@ -57,6 +58,13 @@
                                            pagesize="${items.maxPageItems}" sort="external" requestURI="${requestUrl}"
                                            class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                            style="margin: 3em 0 1.5em;">>
+                                <display:column title="<fieldset class='form-group'>
+                                                        <input type='checkbox' id='checkAll' class='checkbox-box-elemnt'>
+                                                        </fieldset" class="center select-cell" headerClass="center select-cell">
+                                    <fieldset>
+                                        <input type="checkbox" name="checkList" id="checkbox_${tableList.userId}" value="${tableList.userId}" class="checkbox-box-element"/>
+                                    </fieldset>
+                                </display:column>
                                 <display:column property="name" titleKey="label.user.name" sortable="true" sortName="name"/>
                                 <display:column property="fullName" titleKey="label.user.fullname" sortable="true" sortName="fullName"/>
                             </display:table>
