@@ -10,4 +10,6 @@ public interface UserService {
     UserDTO findRoleByUser(UserDTO dto);
 
     Object[] findByProperty(Map<String, Object> property, String sortExperssion, String sortDirection, Integer offset, Integer limit);
+
+    UserDTO findById(Integer userId);
 }

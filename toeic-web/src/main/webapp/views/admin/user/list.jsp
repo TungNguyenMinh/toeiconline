@@ -96,7 +96,7 @@
     });
     function update(btn) {
         var editUrl = $(btn).attr('sc-url');
-        if (typeof url == 'undefined') {
+        if (typeof editUrl == 'undefined') {
             editUrl = '${editUserUrl}';
         }
         $('#myModal').load(editUrl,'',function () {
