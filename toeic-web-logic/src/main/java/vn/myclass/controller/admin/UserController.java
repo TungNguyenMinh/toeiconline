@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = {"/admin-user-list.html","/ajax-user-edit.html"})
+@WebServlet(urlPatterns = {"/admin-user-list.html","/ajax-admin-user-edit.html"})
 public class UserController extends HttpServlet {
     UserService userService = new UserServiceImpl();
 
