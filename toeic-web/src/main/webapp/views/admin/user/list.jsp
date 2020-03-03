@@ -101,6 +101,28 @@
         }
         $('#myModal').load(editUrl,'',function () {
             $('#myModal').modal('toggle');
+            addOrEditUser();
+        });
+    }
+    function addOrEditUser() {
+        $('#btnSave').click(function () {
+            $('#editUserForm').submit();
+        });
+        $('#editUserForm').submit(function (e) {
+            e.preventDefault();
+            $('#crudactionEdit').val('insert_update');
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                dataType: 'html',
+                success: function(res){
+
+                },
+                error: function (res) {
+                    console.log(res);
+                }
+            });
         });
     }
 </script>

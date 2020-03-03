@@ -38,7 +38,9 @@ public class UserController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/list.jsp");
             rd.forward(request, response);
         } else if (command.getUrlType().equals(WebConstant.URL_EDIT)) {
-            if (pojo != null && pojo.getUserId() != null) {
+            if (command.getCrudaction() != null && command.getCrudaction().equals(WebConstant.INSERT_UPDATE)) {
+
+            } else if (pojo != null && pojo.getUserId() != null) {
                 command.setPojo(userService.findById(pojo.getUserId()));
             }
             command.setRoles(roleService.findAll());
