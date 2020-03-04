@@ -20,7 +20,7 @@
                         <h4 class="modal-title"><fmt:message key="label.user.add" bundle="${lang}"/></h4>
                     </c:if>
                 </div>
-                <form action="${editUserUrl}" method="POST" id="editUserForm">
+                <form action="${editUserUrl}" method="post" id="editUserForm">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
