@@ -85,7 +85,8 @@
                             </display:table>
                         </fmt:bundle>
                     </div>
-                    <input type="hidden" name="crudaction" id="crudaction"/>
+                        <input type="hidden" name="crudaction" id="crudaction"/>
+                        <input type="hidden" name="urlType" id="urlType"/>
                     </form>
                 </div>
             </div>
@@ -118,13 +119,14 @@
             e.preventDefault();
             $('#crudactionEdit').val('insert_update');
             $.ajax({
-                type: 'POST',
+                type: $(this).attr('method'),
                 url: $(this).attr('action'),
                 data: $(this).serialize(),
                 dataType: 'html',
                 success: function(res){
                     if(res.trim() == "insert_success") {
                         $('#crudaction').val('insert_success');
+                        $('#urlType').val('url_list');
                         $('#formUrl').submit();
                     }
                 },
