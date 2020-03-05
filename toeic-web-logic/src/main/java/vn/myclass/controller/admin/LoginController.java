@@ -7,6 +7,7 @@ import vn.myclass.core.dto.UserDTO;
 import vn.myclass.core.service.UserService;
 import vn.myclass.core.service.impl.UserServiceImpl;
 import vn.myclass.core.utils.FormUtil;
+import vn.myclass.core.utils.SingletonServiceUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,10 +16,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 @WebServlet("/login.html")
 public class LoginController extends HttpServlet {
     private final Logger log = Logger.getLogger(this.getClass());
+    ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher rd = request.getRequestDispatcher("/views/web/login.jsp");
@@ -29,13 +33,12 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserCommand command = FormUtil.populate(UserCommand.class, request);
         UserDTO pojo = command.getPojo();
-        UserService userService = new UserServiceImpl();
-        try {
-            if (userService.isUserExist(pojo) != null) {
-                if (userService.findRoleByUser(pojo) != null && userService.findRoleByUser(pojo).getRoleDTO() != null) {
-                    if (userService.findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_ADMIN)) {
+        /*try {
+            if (SingletonServiceUtil.getUserServiceInstance().isUserExist(pojo) != null) {
+                if (SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo) != null && SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo).getRoleDTO() != null) {
+                    if (SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_ADMIN)) {
                         response.sendRedirect("/admin-home.html");
-                    } else if (userService.findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_USER)) {
+                    } else if (SingletonServiceUtil.getUserServiceInstance().findRoleByUser(pojo).getRoleDTO().getName().equals(WebConstant.ROLE_USER)) {
                         response.sendRedirect("/home.html");
                     }
                 }
@@ -46,6 +49,6 @@ public class LoginController extends HttpServlet {
             request.setAttribute(WebConstant.MESSAGE_RESPONSE, "Tên hoặc mật khẩu sai");
             RequestDispatcher rd = request.getRequestDispatcher("/views/web/login.jsp");
             rd.forward(request, response);
-        }
+        }*/
     }
 }
