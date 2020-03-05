@@ -25,21 +25,21 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="md-form">
-                                    <input type="text" placeholder="<fmt:message key="label.user.name" bundle="${lang}"/>" class="form-control" value="${item.pojo.name}" id="username"/>
+                                    <input type="text" placeholder="<fmt:message key="label.user.name" bundle="${lang}"/>" class="form-control" value="${item.pojo.name}" id="username" name="pojo.name" required/>
                                 </div>
                             </div>
                             <br/>
                             <br/>
                             <div class="col-md-12">
                                 <div class="md-form">
-                                    <input type="text" placeholder="<fmt:message key="label.user.fullname" bundle="${lang}"/>" class="form-control" value="${item.pojo.fullName}"/>
+                                    <input type="text" placeholder="<fmt:message key="label.user.fullname" bundle="${lang}"/>" class="form-control" value="${item.pojo.fullName}" name="pojo.fullName"/>
                                 </div>
                             </div>
                             <br/>
                             <br/>
                             <div class="col-md-12">
                                 <div class="md-form">
-                                    <input type="password" placeholder="<fmt:message key="label.user.password" bundle="${lang}"/>" class="form-control" value="${item.pojo.password}" id="password"/>
+                                    <input type="password" placeholder="<fmt:message key="label.user.password" bundle="${lang}"/>" class="form-control" value="${item.pojo.password}" id="password" required name="pojo.password"/>
                                 </div>
                             </div>
                             <br/>
@@ -48,18 +48,18 @@
                                 <div class="md-form">
                                     <c:choose>
                                         <c:when test="${not empty item.pojo.userId}">
-                                            <select>
+                                            <select id="role" name="roleId">
                                                 <option value="${item.pojo.roleDTO.roleId}">${item.pojo.roleDTO.name}</option>
                                                 <c:forEach items="${item.roles}" var="itemRole">
-                                                    <c:if test="${itemRole.roleId != item.pojo.roleDTO.roleId}">
+                                                    <c:if test="${itemRole.roleId ne item.pojo.roleDTO.roleId}">
                                                         <option value="${itemRole.roleId}">${itemRole.name}</option>
                                                     </c:if>
                                                 </c:forEach>
                                             </select>
                                         </c:when>
                                         <c:otherwise>
-                                            <select id="role">
-                                                <option><fmt:message key="label.option.role" bundle="${lang}"/></option>
+                                            <select id="role" name="roleId">
+                                                <option value="-1"><fmt:message key="label.option.role" bundle="${lang}"/></option>
                                                 <c:forEach items="${item.roles}" var="itemRole">
                                                     <option value="${itemRole.roleId}">${itemRole.name}</option>
                                                 </c:forEach>
@@ -70,7 +70,9 @@
                             </div>
                         </div>
                     </div>
-                    <input typy="hidden" name="pojo.userId" value="${item.pojo.userId}"/>
+                    <c:if test="${not empty item.pojo.userId}">
+                        <input type="hidden" name="pojo.userId" value="${item.pojo.userId}"/>
+                    </c:if>
                     <input type="hidden" name="crudaction" id="crudactionEdit"/>
                 </form>
                 <div class="modal-footer">
