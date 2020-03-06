@@ -1,7 +1,6 @@
 package vn.myclass.core.service.impl;
 
-import vn.myclass.core.dao.UserDao;
-import vn.myclass.core.daoimpl.UserDaoImpl;
+import vn.myclass.core.dto.CheckLogin;
 import vn.myclass.core.dto.UserDTO;
 import vn.myclass.core.persistence.entity.UserEntity;
 import vn.myclass.core.service.UserService;
@@ -44,5 +43,17 @@ public class UserServiceImpl implements UserService {
         entity = SingletonDaoUtil.getUserDaoInstance().update(entity);
         userDTO = UserBeanUtil.entity2Dto(entity);
         return userDTO;
+    }
+
+    public CheckLogin checkLogin(String name, String password) {
+        CheckLogin checkLogin = new CheckLogin();
+        if (name != null && password != null) {
+            Object[] objects = SingletonDaoUtil.getUserDaoInstance().checkLogin(name, password);
+            checkLogin.setUserExist((Boolean) objects[0]);
+            if (checkLogin.isUserExist()) {
+                checkLogin.setRoleName(objects[1].toString());
+            }
+        }
+        return checkLogin;
     }
 }

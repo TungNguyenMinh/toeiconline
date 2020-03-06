@@ -1,5 +1,5 @@
 package vn.myclass.core.service;
-
+import vn.myclass.core.dto.CheckLogin;
 import vn.myclass.core.dto.UserDTO;
 
 import java.util.Map;
@@ -13,4 +13,6 @@ public interface UserService {
     void saveUser(UserDTO userDTO);
 
     UserDTO updateUser(UserDTO userDTO);
+
+    CheckLogin checkLogin(String name, String password);
 }
