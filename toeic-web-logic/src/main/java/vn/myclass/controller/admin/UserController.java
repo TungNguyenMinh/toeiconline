@@ -24,11 +24,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-@WebServlet(urlPatterns = {"/admin-user-list.html", "/ajax-admin-user-edit.html", "/admin-user-import-list.html", "/admin-user-import-validate.html"})
+@WebServlet(urlPatterns = {"/admin-user-list.html", "/ajax-admin-user-edit.html", "/admin-user-import.html", "/admin-user-import-validate.html"})
 public class UserController extends HttpServlet {
     private final Logger log = Logger.getLogger(this.getClass());
     private final String SHOW_IMPORT_USER = "show_import_user";
     private final String READ_EXCEL = "read_excel";
+    private final String SHOW_LIST_ERROR = "show_list_error";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,6 +57,9 @@ public class UserController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/edit.jsp");
             rd.forward(request, response);
         } else if (command.getUrlType() != null && command.getUrlType().equals(SHOW_IMPORT_USER)) {
+            RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/importuser.jsp");
+            rd.forward(request, response);
+        } else if (command.getUrlType() != null && command.getUrlType().equals(SHOW_LIST_ERROR)) {
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/importuser.jsp");
             rd.forward(request, response);
         }
