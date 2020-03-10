@@ -102,11 +102,11 @@
             <version>1.3.2</version>
         </dependency>
         <!--apache poi-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.16-beta1</version>
-        </dependency>
+            <version>3.16-beta2</version>
+        </dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
