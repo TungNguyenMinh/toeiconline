@@ -1,5 +1,6 @@
 package vn.myclass.controller.admin;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -33,12 +34,12 @@ public class UserController extends HttpServlet {
     private final String READ_EXCEL = "read_excel";
     private final String VALIDATE_IMPORT = "validate_import";
     private final String LIST_USER_IMPORT = "list_user_import";
+    ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserCommand command = FormUtil.populate(UserCommand.class, request);
         UserDTO pojo = command.getPojo();
-        ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
             Map<String, Object> mapProperty = new HashMap<String, Object>();
             Object[] objects = SingletonServiceUtil.getUserServiceInstance().findByProperty(mapProperty, command.getSortExpression(), command.getSortDirection(), command.getFirstItem(), command.getMaxPageItems());
@@ -119,6 +120,7 @@ public class UserController extends HttpServlet {
                     String fileLocation = objects[1].toString();
                     String fileName = objects[2].toString();
                     List<UserImportDTO> excelValue = returnValueFromExcel(fileName, fileLocation);
+                    validateData(excelValue);
                     SessionUtil.getInstance().putValue(request, LIST_USER_IMPORT, excelValue);
                     response.sendRedirect("/admin-user-import-validate.html?urlType=validate_import");
                 }
@@ -126,6 +128,31 @@ public class UserController extends HttpServlet {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             request.setAttribute(WebConstant.MESSAGE_RESPONSE, WebConstant.REDIRECT_ERROR);
+        }
+    }
+
+    private void validateData(List<UserImportDTO> excelValue) {
+        for (UserImportDTO item : excelValue) {
+            validateRequireField(item);
+        }
+    }
+
+    private void validateRequireField(UserImportDTO item) {
+        String message = "";
+        if (StringUtils.isBlank(item.getUserName())) {
+            message += "br/";
+            message += bundle.getString("label.username.notempty");
+        }
+        if (StringUtils.isBlank(item.getPassword())) {
+            message += "br/";
+            message += bundle.getString("label.password.notempty");
+        }
+        if (StringUtils.isBlank(item.getRoleName())) {
+            message += "br/";
+            message += bundle.getString("label.rolename.notempty");
+        }
+        if (StringUtils.isNotBlank(message)) {
+            item.setValid(false);
         }
     }
 
