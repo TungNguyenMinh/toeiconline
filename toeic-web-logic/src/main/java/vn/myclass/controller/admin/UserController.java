@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import vn.myclass.command.UserCommand;
 import vn.myclass.core.common.WebConstant;
 import vn.myclass.core.common.utils.ExcelPoiUtil;
+import vn.myclass.core.common.utils.SessionUtil;
 import vn.myclass.core.common.utils.UploadUtil;
 import vn.myclass.core.dto.RoleDTO;
 import vn.myclass.core.dto.UserDTO;
@@ -21,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -29,7 +31,8 @@ public class UserController extends HttpServlet {
     private final Logger log = Logger.getLogger(this.getClass());
     private final String SHOW_IMPORT_USER = "show_import_user";
     private final String READ_EXCEL = "read_excel";
-    private final String SHOW_LIST_ERROR = "show_list_error";
+    private final String VALIDATE_IMPORT = "validate_import";
+    private final String LIST_USER_IMPORT = "list_user_import";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -59,7 +62,12 @@ public class UserController extends HttpServlet {
         } else if (command.getUrlType() != null && command.getUrlType().equals(SHOW_IMPORT_USER)) {
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/importuser.jsp");
             rd.forward(request, response);
-        } else if (command.getUrlType() != null && command.getUrlType().equals(SHOW_LIST_ERROR)) {
+        } else if (command.getUrlType() != null && command.getUrlType().equals(VALIDATE_IMPORT)) {
+            List<UserImportDTO> userImportDTOS = (List<UserImportDTO>) SessionUtil.getInstance().getValue(request, LIST_USER_IMPORT);
+            command.setMaxPageItems(3);
+            command.setUserImportDTOS(userImportDTOS);
+            command.setTotalItems(userImportDTOS.size());
+            request.setAttribute(WebConstant.LIST_ITEMS, command);
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/importuser.jsp");
             rd.forward(request, response);
         }
@@ -96,6 +104,8 @@ public class UserController extends HttpServlet {
                         request.setAttribute(WebConstant.MESSAGE_RESPONSE, WebConstant.REDIRECT_INSERT);
                     }
                 }
+                RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/edit.jsp");
+                rd.forward(request, response);
             }
             if (objects != null) {
                 String urlType = null;
@@ -109,14 +119,14 @@ public class UserController extends HttpServlet {
                     String fileLocation = objects[1].toString();
                     String fileName = objects[2].toString();
                     List<UserImportDTO> excelValue = returnValueFromExcel(fileName, fileLocation);
+                    SessionUtil.getInstance().putValue(request, LIST_USER_IMPORT, excelValue);
+                    response.sendRedirect("/admin-user-import-validate.html?urlType=validate_import");
                 }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             request.setAttribute(WebConstant.MESSAGE_RESPONSE, WebConstant.REDIRECT_ERROR);
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/edit.jsp");
-        rd.forward(request, response);
     }
 
     private List<UserImportDTO> returnValueFromExcel(String fileName, String fileLocation) throws Exception {
