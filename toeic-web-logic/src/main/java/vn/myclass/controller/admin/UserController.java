@@ -132,28 +132,47 @@ public class UserController extends HttpServlet {
     }
 
     private void validateData(List<UserImportDTO> excelValue) {
+        Set<String> stringSet = new HashSet<String>();
         for (UserImportDTO item : excelValue) {
             validateRequireField(item);
+            validateDuplicate(item, stringSet);
+        }
+    }
+
+    private void validateDuplicate(UserImportDTO item, Set<String> stringSet) {
+        String message = item.getError();
+        if (!stringSet.contains(item.getUserName())) {
+            stringSet.add(item.getUserName());
+        } else {
+            if (item.isValid()) {
+                message += "<br/>";
+                message += bundle.getString("label.username.duplicate");
+            }
+        }
+        if (StringUtils.isNotBlank(message)) {
+            item.setValid(false);
+            item.setError(message);
         }
     }
 
     private void validateRequireField(UserImportDTO item) {
         String message = "";
         if (StringUtils.isBlank(item.getUserName())) {
-            message += "br/";
+            message += "<br/>";
             message += bundle.getString("label.username.notempty");
         }
         if (StringUtils.isBlank(item.getPassword())) {
-            message += "br/";
+            message += "<br/>";
             message += bundle.getString("label.password.notempty");
         }
         if (StringUtils.isBlank(item.getRoleName())) {
-            message += "br/";
+            message += "<br/>";
             message += bundle.getString("label.rolename.notempty");
         }
         if (StringUtils.isNotBlank(message)) {
             item.setValid(false);
         }
+        item.setError(message);
     }
 
     private List<UserImportDTO> returnValueFromExcel(String fileName, String fileLocation) throws Exception {
