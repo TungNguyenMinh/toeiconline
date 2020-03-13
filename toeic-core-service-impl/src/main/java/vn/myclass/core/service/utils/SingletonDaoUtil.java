@@ -16,7 +16,7 @@ public class SingletonDaoUtil {
         return userDaoImpl;
     }
 
-    public static RoleDaoImpl getRoleDaoImpl() {
+    public static RoleDaoImpl getRoleDaoInstance() {
         if (roleDaoImpl == null) {
             roleDaoImpl = new RoleDaoImpl();
         }

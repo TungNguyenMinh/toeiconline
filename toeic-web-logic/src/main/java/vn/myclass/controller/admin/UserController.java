@@ -23,7 +23,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -120,7 +119,7 @@ public class UserController extends HttpServlet {
                     String fileLocation = objects[1].toString();
                     String fileName = objects[2].toString();
                     List<UserImportDTO> excelValue = returnValueFromExcel(fileName, fileLocation);
-                    validateData(excelValue);
+                        validateData(excelValue);
                     SessionUtil.getInstance().putValue(request, LIST_USER_IMPORT, excelValue);
                     response.sendRedirect("/admin-user-import-validate.html?urlType=validate_import");
                 }
@@ -137,6 +136,7 @@ public class UserController extends HttpServlet {
             validateRequireField(item);
             validateDuplicate(item, stringSet);
         }
+        SingletonServiceUtil.getUserServiceInstance().validateImportUser(excelValue);
     }
 
     private void validateDuplicate(UserImportDTO item, Set<String> stringSet) {
