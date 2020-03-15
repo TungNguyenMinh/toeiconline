@@ -15,8 +15,8 @@ import java.util.*;
 
 public class UserServiceImpl implements UserService {
 
-    public Object[] findByProperty(Map<String, Object> property, String sortExperssion, String sortDirection, Integer offset, Integer limit) {
-        Object[] objects = SingletonDaoUtil.getUserDaoInstance().findByProperty(property, sortExperssion, sortDirection, offset, limit);
+    public Object[] findByProperty(Map<String, Object> property, String sortExpression, String sortDirection, Integer offset, Integer limit) {
+        Object[] objects = SingletonDaoUtil.getUserDaoInstance().findByProperty(property, sortExpression, sortDirection, offset, limit);
         List<UserDTO> userDTOS = new ArrayList<UserDTO>();
         for (UserEntity item : (List<UserEntity>) objects[1]) {
             UserDTO userDTO = UserBeanUtil.entity2Dto(item);
@@ -97,8 +97,25 @@ public class UserServiceImpl implements UserService {
                     message += "Vai trò không tồn tại";
                 }
                 if (StringUtils.isNotBlank(message)) {
+                    item.setValid(false);
                     item.setError(message.substring(5));
                 }
+            }
+        }
+    }
+
+    public void saveUserImport(List<UserImportDTO> userImportDTOS) {
+        for (UserImportDTO item : userImportDTOS) {
+            if (item.isValid()) {
+                UserEntity userEntity = new UserEntity();
+                userEntity.setName(item.getUserName());
+                userEntity.setFullName(item.getFullName());
+                userEntity.setPassword(item.getPassword());
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                userEntity.setCreatedDate(timestamp);
+                RoleEntity roleEntity = SingletonDaoUtil.getRoleDaoInstance().findEqualUnique("name", item.getRoleName().toUpperCase());
+                userEntity.setRoleEntity(roleEntity);
+                SingletonDaoUtil.getUserDaoInstance().save(userEntity);
             }
         }
     }

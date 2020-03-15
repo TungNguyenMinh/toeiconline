@@ -33,6 +33,7 @@ public class UserController extends HttpServlet {
     private final String READ_EXCEL = "read_excel";
     private final String VALIDATE_IMPORT = "validate_import";
     private final String LIST_USER_IMPORT = "list_user_import";
+    private final String IMPORT_DATA = "import_data";
     ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
 
     @Override
@@ -46,7 +47,7 @@ public class UserController extends HttpServlet {
             command.setTotalItems(Integer.parseInt(objects[0].toString()));
             request.setAttribute(WebConstant.LIST_ITEMS, command);
             if (command.getCrudaction() != null) {
-                Map<String, String> mapMessage = buidMapRedirectMessage(bundle);
+                Map<String, String> mapMessage = buildMapRedirectMessage(bundle);
                 WebCommonUitl.addRedirectMessage(request, command.getCrudaction(), mapMessage);
             }
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/user/list.jsp");
@@ -73,7 +74,7 @@ public class UserController extends HttpServlet {
         }
     }
 
-    private Map<String, String> buidMapRedirectMessage(ResourceBundle bundle) {
+    private Map<String, String> buildMapRedirectMessage(ResourceBundle bundle) {
         Map<String, String> mapMessage = new HashMap<String, String>();
         mapMessage.put(WebConstant.REDIRECT_INSERT, bundle.getString("label.user.message.add.success"));
         mapMessage.put(WebConstant.REDIRECT_UPDATE, bundle.getString("label.user.message.update.success"));
@@ -119,10 +120,16 @@ public class UserController extends HttpServlet {
                     String fileLocation = objects[1].toString();
                     String fileName = objects[2].toString();
                     List<UserImportDTO> excelValue = returnValueFromExcel(fileName, fileLocation);
-                        validateData(excelValue);
+                    validateData(excelValue);
                     SessionUtil.getInstance().putValue(request, LIST_USER_IMPORT, excelValue);
                     response.sendRedirect("/admin-user-import-validate.html?urlType=validate_import");
                 }
+            }
+            if (command.getUrlType() != null && command.getUrlType().equals(IMPORT_DATA)) {
+                List<UserImportDTO> userImportDTOS = (List<UserImportDTO>) SessionUtil.getInstance().getValue(request, LIST_USER_IMPORT);
+                SingletonServiceUtil.getUserServiceInstance().saveUserImport(userImportDTOS);
+                SessionUtil.getInstance().remove(request, LIST_USER_IMPORT);
+                response.sendRedirect("/admin-user-list.html?urlType=url_list");
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

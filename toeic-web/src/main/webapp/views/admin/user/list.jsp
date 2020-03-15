@@ -52,7 +52,7 @@
                                             </span>
                                         </a>
                                         <button type="button" class="dt-button buttons-html5 btn btn-white btn-primary btn-bold" id="deleteAll" disabled
-                                            data-toggle="tooltip" title="<fmt:message key='label.deleteall' bundle='${lang}'/>">
+                                            data-toggle="tooltip" title="<fmt:message key='label.delete.all' bundle='${lang}'/>">
                                             <span>
                                                 <i class="fa fa-trash-o bigger-110 pink"></i>
                                             </span>

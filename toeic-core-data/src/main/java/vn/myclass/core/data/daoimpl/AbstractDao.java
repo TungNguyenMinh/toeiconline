@@ -92,7 +92,7 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
         return result;
     }
 
-    public Object[] findByProperty(Map<String, Object> property, String sortExperssion, String sortDirection, Integer offset, Integer limit) {
+    public Object[] findByProperty(Map<String, Object> property, String sortExpression, String sortDirection, Integer offset, Integer limit) {
         List<T> list = new ArrayList<T>();
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
@@ -117,8 +117,8 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
                     }
                 }
             }
-            if (sortExperssion != null && sortDirection != null) {
-                sql1.append(" order by ").append(sortExperssion);
+            if (sortExpression != null && sortDirection != null) {
+                sql1.append(" order by ").append(sortExpression);
                 sql1.append(" " + (sortDirection.equals(CoreConstant.SORT_ASC) ? "asc" : "desc"));
             }
             Query query1 = session.createQuery(sql1.toString());
@@ -180,5 +180,23 @@ public class AbstractDao<ID extends Serializable, T> implements GenericDao<ID, T
             session.close();
         }
         return count;
+    }
+
+    public T findEqualUnique(String property, Object value) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        T result = null;
+        try {
+            String sql = " FROM " + getPersistenceClassName() + " model WHERE model. " + property + "= :value";
+            Query query = session.createQuery(sql.toString());
+            query.setParameter("value", value);
+            result = (T) query.uniqueResult();
+        } catch (HibernateException e) {
+            transaction.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }
