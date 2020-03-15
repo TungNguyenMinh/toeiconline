@@ -109,26 +109,37 @@
                         </div>
                         <div class="table-responsive">
                             <fmt:bundle basename="ApplicationResources">
-                                <display:table id="tableList" name="items.listResult" partialList="true" size="${items.totalItems}"
-                                               pagesize="${items.maxPageItems}" sort="external" requestURI="${requestUrl}"
+                                <display:table id="tableList" name="items.listResult" partialList="true"
+                                               size="${items.totalItems}"
+                                               pagesize="${items.maxPageItems}" sort="external"
+                                               requestURI="${requestUrl}"
                                                class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
                                                style="margin: 3em 0 1.5em;">
                                     <display:column title="<fieldset class='form-group'>
 												        <input type='checkbox' id='checkAll' class='check-box-element'>
-												        </fieldset>" class="center select-cell" headerClass="center select-cell">
+												        </fieldset>" class="center select-cell"
+                                                    headerClass="center select-cell">
                                         <fieldset>
-                                            <input type="checkbox" name="checkList" id="checkbox_${tableList.listenGuidelineId}" value="${tableList.listenGuidelineId}" class="check-box-element"/>
+                                            <input type="checkbox" name="checkList"
+                                                   id="checkbox_${tableList.listenGuidelineId}"
+                                                   value="${tableList.listenGuidelineId}" class="check-box-element"/>
                                         </fieldset>
                                     </display:column>
-                                    <display:column property="title" titleKey="label.guideline.listen.title" sortable="true" sortName="title"/>
-                                    <display:column property="content" titleKey="label.guideline.listen.content" sortable="true" sortName="content"/>
+                                    <display:column property="title" titleKey="label.guideline.listen.title"
+                                                    sortable="true" sortName="title"/>
+                                    <display:column property="content" titleKey="label.guideline.listen.content"
+                                                    sortable="true" sortName="content"/>
                                     <display:column headerClass="col-actions" titleKey="label.action">
-                                        <%--<c:url var="editUrl" value="/ajax-admin-user-edit.html">
+                                        <c:url var="editUrl" value="/admin-guideline-listen-edit.html">
                                             <c:param name="urlType" value="url_edit"/>
-                                            <c:param name="pojo.userId" value="${tableList.userId}"/>
-                                        </c:url>--%>
-                                        <a class="btn btn-sm btn-primary btn-edit" sc-url="${editUrl}" onclick="update(this)" data-toggle="tooltip" title="<fmt:message key='label.user.edit' bundle='${lang}'/>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                        <a class="btn btn-sm btn-danger btn-cancel" data-toggle="tooltip" title="<fmt:message key='label.user.delete' bundle='${lang}'/>"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                            <c:param name="pojo.listenGuidelineId" value="${tableList.listenGuidelineId}"/>
+                                        </c:url>
+                                        <a class="btn btn-sm btn-primary btn-edit"href="${editUrl}" data-toggle="tooltip"
+                                           title="<fmt:message key='label.user.edit' bundle='${lang}'/>"><i
+                                                class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                        <a class="btn btn-sm btn-danger btn-cancel" data-toggle="tooltip"
+                                           title="<fmt:message key='label.user.delete' bundle='${lang}'/>"><i
+                                                class="fa fa-trash" aria-hidden="true"></i></a>
                                     </display:column>
                                 </display:table>
                             </fmt:bundle>

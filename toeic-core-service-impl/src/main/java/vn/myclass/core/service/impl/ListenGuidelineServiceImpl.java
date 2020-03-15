@@ -23,4 +23,10 @@ public class ListenGuidelineServiceImpl implements ListenGuidelineService {
         objects[1] = result;
         return objects;
     }
+
+    public ListenGuidelineDTO findByListenGuidelineId(String property, Integer listenGuidelineId) {
+        ListenGuidelineEntity entity = SingletonDaoUtil.getListenGuidelineDaoInstance().findEqualUnique(property, listenGuidelineId);
+        ListenGuidelineDTO dto = ListenGuidelineBeanUtil.entity2Dto(entity);
+        return dto;
+    }
 }
