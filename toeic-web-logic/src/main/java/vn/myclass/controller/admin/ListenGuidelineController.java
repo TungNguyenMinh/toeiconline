@@ -11,6 +11,7 @@ import vn.myclass.core.service.impl.ListenGuidelineServiceImpl;
 import vn.myclass.core.utils.FormUtil;
 import vn.myclass.core.utils.RequestUtil;
 import vn.myclass.core.utils.SingletonServiceUtil;
+import vn.myclass.core.utils.WebCommonUitl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -30,15 +31,12 @@ public class ListenGuidelineController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, request);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
-        /*HttpSession session = request.getSession();
-        request.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-        request.setAttribute(WebConstant.MESSAGE_RESPONSE, resourceBundle.getString("label.guideline.listen.add.success"));
-        if (session != null) {
-            session.setAttribute(WebConstant.ALERT, session.getAttribute(WebConstant.ALERT));
-            session.setAttribute(WebConstant.MESSAGE_RESPONSE, session.getAttribute(WebConstant.MESSAGE_RESPONSE));
-        }*/
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
             executeSearchListenGuideline(request, command);
+            if (command.getCrudaction() != null) {
+                Map<String, String> mapMessage = buildMapRedirectMessage(resourceBundle);
+                WebCommonUitl.addRedirectMessage(request, command.getCrudaction(), mapMessage);
+            }
             request.setAttribute(WebConstant.LIST_ITEMS, command);
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/listenguideline/list.jsp");
             rd.forward(request, response);
@@ -50,8 +48,15 @@ public class ListenGuidelineController extends HttpServlet {
             RequestDispatcher rd = request.getRequestDispatcher("/views/admin/listenguideline/edit.jsp");
             rd.forward(request, response);
         }
-        /*session.removeAttribute(WebConstant.ALERT);
-        session.removeAttribute(WebConstant.MESSAGE_RESPONSE);*/
+    }
+
+    private Map<String, String> buildMapRedirectMessage(ResourceBundle resourceBundle) {
+        Map<String, String> mapMessage = new HashMap<String, String>();
+        mapMessage.put(WebConstant.REDIRECT_INSERT, resourceBundle.getString("label.listenguideline.add.succress"));
+        mapMessage.put(WebConstant.REDIRECT_UPDATE, resourceBundle.getString("label.listenguideline.update.succress"));
+        mapMessage.put(WebConstant.REDIRECT_DELETE, resourceBundle.getString("label.listenguideline.delete.succress"));
+        mapMessage.put(WebConstant.REDIRECT_ERROR, resourceBundle.getString("label.message.error"));
+        return mapMessage;
     }
 
     private void executeSearchListenGuideline(HttpServletRequest request, ListenGuidelineCommand command) {
@@ -75,39 +80,37 @@ public class ListenGuidelineController extends HttpServlet {
         ListenGuidelineCommand command = new ListenGuidelineCommand();
         ResourceBundle bundle = ResourceBundle.getBundle("ApplicationResources");
         UploadUtil uploadUtil = new UploadUtil();
-        HttpSession session = request.getSession();
-        //Set<String> valueTitle = buildSetValueListenguideline();
-        /*try {
-            Object[] object = uploadUtil.writeOrUpdateFile(request, valueTitle, WebConstant.LISTENGUIDELINE);
-            Map<String, String> mapValue = (Map<String, String>) object[3];
-            command = returnValueListenGuidelineCommand(valueTitle, command, mapValue);
-            session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_SUCCESS);
-            session.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.guideline.listen.add.success"));
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            session.setAttribute(WebConstant.ALERT, WebConstant.TYPE_ERROR);
-            session.setAttribute(WebConstant.MESSAGE_RESPONSE, bundle.getString("label.error"));
-        }*/
-        response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list");
+        Set<String> valueTitle = buildSetValueListenGuideline();
+        Object[] object = uploadUtil.writeOrUpdateFile(request, valueTitle, WebConstant.LISTENGUIDELINE);
+        boolean checkStatusUploadImage = (Boolean) object[0];
+        if (!checkStatusUploadImage) {
+            response.sendRedirect("/admin-guideline-listen-list.html?typeUrl=url_list&&crudaction=rect_error");
+        } else {
+
+        }
+        /*Map<String, String> mapValue = (Map<String, String>) object[3];
+        command = returnValueListenGuidelineCommand(valueTitle, command, mapValue);
+        response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list");*/
     }
 
-    /*private ListenGuidelineCommand returnValueListenGuidelineCommand(Set<String> valueTitle, ListenGuidelineCommand command, Map<String, String> mapValue) {
-        for (String item : valueTitle) {
-            if (mapValue.containsKey(item)) {
-                if (item.equals("pojo.title")) {
-                    command.getPojo().setTitle(mapValue.get(item));
-                } else if (item.equals("pojo.content")) {
-                    command.getPojo().setContent(mapValue.get(item));
-                }
+    private ListenGuidelineDTO returnValueOfDTO(ListenGuidelineDTO dto, Map<String, String> mapValue) {
+        for (Map.Entry<String, String> item : mapValue.entrySet()) {
+            if (item.getKey().equals("pojo.title")) {
+                dto.setTitle(item.getValue());
+            } else if (item.getKey().equals("pojo.content")) {
+                dto.setContent((item.getValue()));
+            } else if (item.getKey().equals("pojo.listenGuidelineId")) {
+                dto.setListenGuidelineId(Integer.parseInt(item.getValue().toString()));
             }
         }
-        return command;
-    }*/
+        return dto;
+    }
 
-    /*private Set<String> buildSetValueListenguideline() {
+    private Set<String> buildSetValueListenGuideline() {
         Set<String> returnValue = new HashSet<String>();
         returnValue.add("pojo.title");
         returnValue.add("pojo.content");
+        returnValue.add("pojo.listenGuidelineId");
         return returnValue;
-    }*/
+    }
 }

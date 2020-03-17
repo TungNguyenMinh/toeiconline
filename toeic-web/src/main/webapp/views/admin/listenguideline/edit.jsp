@@ -65,7 +65,7 @@
                                 <c:if test="${not empty item.pojo.image}">
                                     <c:set var="image" value="/fileupload/listenguideline/${item.pojo.image}"/>
                                 </c:if>
-                                <img src="${image}" id="viewImage" width="150px" height="150px"/>
+                                <img src="${image}" id="viewImage" width="320px" height="180px"/>
                             </div>
                         </div>
                         <br/>
