@@ -2,12 +2,14 @@ package vn.myclass.controller.admin;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import vn.myclass.command.ListenGuidelineCommand;
 import vn.myclass.core.common.WebConstant;
 import vn.myclass.core.common.utils.UploadUtil;
 import vn.myclass.core.dto.ListenGuidelineDTO;
 import vn.myclass.core.service.ListenGuidelineService;
 import vn.myclass.core.service.impl.ListenGuidelineServiceImpl;
+import vn.myclass.core.service.utils.SingletonDaoUtil;
 import vn.myclass.core.utils.FormUtil;
 import vn.myclass.core.utils.RequestUtil;
 import vn.myclass.core.utils.SingletonServiceUtil;
@@ -84,13 +86,28 @@ public class ListenGuidelineController extends HttpServlet {
         Object[] object = uploadUtil.writeOrUpdateFile(request, valueTitle, WebConstant.LISTENGUIDELINE);
         boolean checkStatusUploadImage = (Boolean) object[0];
         if (!checkStatusUploadImage) {
-            response.sendRedirect("/admin-guideline-listen-list.html?typeUrl=url_list&&crudaction=rect_error");
+            response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
         } else {
-
+            ListenGuidelineDTO dto = command.getPojo();
+            if (StringUtils.isNotBlank(object[2].toString())) {
+                dto.setImage(object[2].toString());
+            }
+            Map<String, String> mapValue = (Map<String, String>) object[3];
+            dto = returnValueOfDTO(dto, mapValue);
+            if (dto != null) {
+                if (dto.getListenGuidelineId() != null) {
+                    // update
+                } else {
+                    try {
+                        SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(dto);
+                        response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_insert");
+                    } catch (ConstraintViolationException e) {
+                        log.error(e.getMessage(), e);
+                        response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+                    }
+                }
+            }
         }
-        /*Map<String, String> mapValue = (Map<String, String>) object[3];
-        command = returnValueListenGuidelineCommand(valueTitle, command, mapValue);
-        response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list");*/
     }
 
     private ListenGuidelineDTO returnValueOfDTO(ListenGuidelineDTO dto, Map<String, String> mapValue) {
