@@ -7,8 +7,6 @@ import vn.myclass.command.ListenGuidelineCommand;
 import vn.myclass.core.common.WebConstant;
 import vn.myclass.core.common.utils.UploadUtil;
 import vn.myclass.core.dto.ListenGuidelineDTO;
-import vn.myclass.core.service.ListenGuidelineService;
-import vn.myclass.core.service.impl.ListenGuidelineServiceImpl;
 import vn.myclass.core.service.utils.SingletonDaoUtil;
 import vn.myclass.core.utils.FormUtil;
 import vn.myclass.core.utils.RequestUtil;
@@ -21,7 +19,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.*;
 
@@ -34,6 +31,16 @@ public class ListenGuidelineController extends HttpServlet {
         ListenGuidelineCommand command = FormUtil.populate(ListenGuidelineCommand.class, request);
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ApplicationResources");
         if (command.getUrlType() != null && command.getUrlType().equals(WebConstant.URL_LIST)) {
+            if (command.getCrudaction() != null && command.getCrudaction().equals(WebConstant.REDIRECT_DELETE)) {
+                List<Integer> ids = new ArrayList<Integer>();
+                for (String item : command.getCheckList()) {
+                    ids.add(Integer.parseInt(item));
+                }
+                Integer result = SingletonDaoUtil.getListenGuidelineDaoInstance().delete(ids);
+                if (result != ids.size()) {
+                    command.setCrudaction(WebConstant.REDIRECT_ERROR);
+                }
+            }
             executeSearchListenGuideline(request, command);
             if (command.getCrudaction() != null) {
                 Map<String, String> mapMessage = buildMapRedirectMessage(resourceBundle);
@@ -96,7 +103,17 @@ public class ListenGuidelineController extends HttpServlet {
             dto = returnValueOfDTO(dto, mapValue);
             if (dto != null) {
                 if (dto.getListenGuidelineId() != null) {
-                    // update
+                    ListenGuidelineDTO listenGuidelineDTO = SingletonServiceUtil.getListenGuidelineServiceInstance().findByListenGuidelineId("listenGuidelineId", dto.getListenGuidelineId());
+                    if (dto.getImage() == null) {
+                        dto.setImage(listenGuidelineDTO.getImage());
+                    }
+                    dto.setCreatedDate(listenGuidelineDTO.getCreatedDate());
+                    ListenGuidelineDTO result = SingletonServiceUtil.getListenGuidelineServiceInstance().updateListenGuideline(dto);
+                    if (result != null) {
+                        response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_update");
+                    } else {
+                        response.sendRedirect("/admin-guideline-listen-list.html?urlType=url_list&&crudaction=redirect_error");
+                    }
                 } else {
                     try {
                         SingletonServiceUtil.getListenGuidelineServiceInstance().saveListenGuideline(dto);

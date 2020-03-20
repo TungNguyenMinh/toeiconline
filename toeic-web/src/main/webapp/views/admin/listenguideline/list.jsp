@@ -132,19 +132,19 @@
                                     <display:column headerClass="col-actions" titleKey="label.action">
                                         <c:url var="editUrl" value="/admin-guideline-listen-edit.html">
                                             <c:param name="urlType" value="url_edit"/>
-                                            <c:param name="pojo.listenGuidelineId" value="${tableList.listenGuidelineId}"/>
+                                            <c:param name="pojo.listenGuidelineId"
+                                                     value="${tableList.listenGuidelineId}"/>
                                         </c:url>
-                                        <a class="btn btn-sm btn-primary btn-edit"href="${editUrl}" data-toggle="tooltip"
+                                        <a class="btn btn-sm btn-primary btn-edit" href="${editUrl}"
+                                           data-toggle="tooltip"
                                            title="<fmt:message key='label.user.edit' bundle='${lang}'/>"><i
                                                 class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                        <a class="btn btn-sm btn-danger btn-cancel" data-toggle="tooltip"
-                                           title="<fmt:message key='label.user.delete' bundle='${lang}'/>"><i
-                                                class="fa fa-trash" aria-hidden="true"></i></a>
                                     </display:column>
                                 </display:table>
                             </fmt:bundle>
                         </div>
                         <input type="hidden" name="urlType" id="urlType"/>
+                        <input type="hidden" name="crudaction" id="crudaction"/>
                     </form>
                 </div>
             </div>
@@ -158,6 +158,14 @@
             $('#formUrl').submit();
         });
     });
+
+    function warningBeforeDelete() {
+        showAlertBeforeDelete(function () {
+            $('#urlType').val('url_list');
+            $('#crudaction').val('redirect_delete');
+            $('#formUrl').submit();
+        });
+    }
 </script>
 </body>
 </html>

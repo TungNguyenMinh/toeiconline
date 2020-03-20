@@ -38,4 +38,18 @@ public class ListenGuidelineServiceImpl implements ListenGuidelineService {
         ListenGuidelineEntity entity = ListenGuidelineBeanUtil.dto2Entity(dto);
         SingletonDaoUtil.getListenGuidelineDaoInstance().save(entity);
     }
+
+    public ListenGuidelineDTO updateListenGuideline(ListenGuidelineDTO dto) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        dto.setModifiedDate(timestamp);
+        ListenGuidelineEntity entity = ListenGuidelineBeanUtil.dto2Entity(dto);
+        entity = SingletonDaoUtil.getListenGuidelineDaoInstance().update(entity);
+        dto = ListenGuidelineBeanUtil.entity2Dto(entity);
+        return dto;
+    }
+
+    public Integer delete(List<Integer> ids) {
+        Integer result = SingletonDaoUtil.getListenGuidelineDaoInstance().delete(ids);
+        return result;
+    }
 }
